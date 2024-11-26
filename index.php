@@ -34,6 +34,7 @@
     <!-- Chatbot Script -->
     <div class="chatbot-container">
         <script async
+            id="chatbot-script"
             src="https://agent-df84da16dccac352151a-x7cs6.ondigitalocean.app/static/chatbot/widget.js"
             data-agent-id="c608de03-a1c5-11ef-bf8f-4e013e2ddde4"
             data-chatbot-id="iBWI8AUPaWFRkJZaxWeDQHJu9UuN6B4t"
@@ -41,35 +42,58 @@
             data-primary-color="#031B4E"
             data-secondary-color="#E5E8ED"
             data-button-background-color="#0061EB"
-            data-starting-message="Hello! How can I help you today?"
+            data-starting-message="Loading weather data..."
             data-logo="/static/chatbot/icons/default-agent.svg">
         </script>
     </div>
+
+    <script>
+        // DigitalOcean Function URL
+        const weatherFunctionUrl = "https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-ef5770fa-4b92-4259-92a7-e4e1f57bc01d/default/Weather_Update";
+
+        // Function to get user location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(fetchWeatherData, showError);
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Fetch weather data from DigitalOcean Function
+        function fetchWeatherData(position) {
+            const { latitude, longitude } = position.coords;
+
+            fetch(`${weatherFunctionUrl}?lat=${latitude}&lon=${longitude}`)
+                .then(response => response.json())
+                .then(data => updateChatbotGreeting(data))
+                .catch(error => console.error("Error fetching weather data:", error));
+        }
+
+        // Update chatbot greeting with weather information
+        function updateChatbotGreeting(weatherData) {
+            if (weatherData.error) {
+                console.error("Weather API Error:", weatherData.error);
+                return;
+            }
+
+            const weatherDescription = weatherData.weather[0].description;
+            const temperature = Math.round(weatherData.main.temp);
+            const city = weatherData.name;
+
+            const greeting = `Hello! The current weather in ${city} is ${weatherDescription} with a temperature of ${temperature}°C. How can I help you today?`;
+
+            const chatbotScript = document.getElementById('chatbot-script');
+            chatbotScript.setAttribute("data-starting-message", greeting);
+        }
+
+        // Handle location errors
+        function showError(error) {
+            console.error("Error fetching user location:", error.message);
+        }
+
+        // Initialize
+        getUserLocation();
+    </script>
 </body>
 </html>
-
-function fetchWeatherData(position) {
-    const { latitude, longitude } = position.coords;
-    const weatherFunctionUrl = "https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-ef5770fa-4b92-4259-92a7-e4e1f57bc01d/default/Weather_Update";
-
-    fetch(`${weatherFunctionUrl}?lat=${latitude}&lon=${longitude}`)
-        .then(response => response.json())
-        .then(data => updateChatbotGreeting(data))
-        .catch(error => console.error("Error fetching weather data:", error));
-}
-
-function updateChatbotGreeting(weatherData) {
-    if (weatherData.error) {
-        console.error("Weather API Error:", weatherData.error);
-        return;
-    }
-
-    const weatherDescription = weatherData.weather[0].description;
-    const temperature = Math.round(weatherData.main.temp);
-    const city = weatherData.name;
-
-    const greeting = `Hello! The current weather in ${city} is ${weatherDescription} with a temperature of ${temperature}°C. How can I help you today?`;
-
-    const chatbotScript = document.getElementById('chatbot-script');
-    chatbotScript.setAttribute("data-starting-message", greeting);
-}
