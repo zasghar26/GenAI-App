@@ -49,7 +49,7 @@
 
     <script>
         // DigitalOcean Function URL
-        const weatherFunctionUrl = "https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-ef5770fa-4b92-4259-92a7-e4e1f57bc01d/default/Weather_Update";
+        const weatherFunctionUrl = "https://faas-tor1-70ca848e.doserverless.co/api/v1/web/fn-7d85e600-9a9b-4ff4-bf0a-8d7fd31f78dd/default/weather";
 
         // Function to get user location
         function getUserLocation() {
