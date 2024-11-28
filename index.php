@@ -42,7 +42,6 @@
             data-primary-color="#031B4E"
             data-secondary-color="#E5E8ED"
             data-button-background-color="#0061EB"
-            data-starting-message="Loading weather data..."
             data-logo="/static/chatbot/icons/default-agent.svg">
         </script>
     </div>
