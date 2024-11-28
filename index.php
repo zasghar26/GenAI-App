@@ -42,6 +42,7 @@
             data-primary-color="#031B4E"
             data-secondary-color="#E5E8ED"
             data-button-background-color="#0061EB"
+            data-starting-message="Welcome, How can I help you ..."
             data-logo="/static/chatbot/icons/default-agent.svg">
         </script>
     </div>
@@ -70,7 +71,7 @@
         }
 
         // Update chatbot greeting with weather information
-        //function updateChatbotGreeting(weatherData) {
+        function updateChatbotGreeting(weatherData) {
             if (weatherData.error) {
                 console.error("Weather API Error:", weatherData.error);
                 return;
