@@ -48,7 +48,7 @@
 
     <script>
         // DigitalOcean Function URL
-        //const weatherFunctionUrl = "https://faas-tor1-70ca848e.doserverless.co/api/v1/web/fn-7d85e600-9a9b-4ff4-bf0a-8d7fd31f78dd/default/weather";
+        const weatherFunctionUrl = "https://faas-tor1-70ca848e.doserverless.co/api/v1/web/fn-7d85e600-9a9b-4ff4-bf0a-8d7fd31f78dd/default/weather";
 
         // Function to get user location
         function getUserLocation() {
@@ -71,28 +71,28 @@
 
         // Update chatbot greeting with weather information
         //function updateChatbotGreeting(weatherData) {
-          //  if (weatherData.error) {
-            //    console.error("Weather API Error:", weatherData.error);
-           //     return;
-           // }
+            if (weatherData.error) {
+                console.error("Weather API Error:", weatherData.error);
+                return;
+            }
 
-           // const weatherDescription = weatherData.weather[0].description;
-           // const temperature = Math.round(weatherData.main.temp);
-           // const city = weatherData.name;
+            const weatherDescription = weatherData.weather[0].description;
+            const temperature = Math.round(weatherData.main.temp);
+            const city = weatherData.name;
 
-           // const greeting = `Hello! The current weather in ${city} is ${weatherDescription} with a temperature of ${temperature}°C. How can I help you today?`;
+            const greeting = `Hello! The current weather in ${city} is ${weatherDescription} with a temperature of ${temperature}°C. How can I help you today?`;
 
-          //  const chatbotScript = document.getElementById('chatbot-script');
-          //  chatbotScript.setAttribute("data-starting-message", greeting);
-        //}
+            const chatbotScript = document.getElementById('chatbot-script');
+            chatbotScript.setAttribute("data-starting-message", greeting);
+        }
 
         // Handle location errors
-       // function showError(error) {
-       //     console.error("Error fetching user location:", error.message);
-       // }
+        function showError(error) {
+            console.error("Error fetching user location:", error.message);
+        }
 
-        // Initialize
-       // getUserLocation();
+         Initialize
+        getUserLocation();
     </script>
 </body>
 </html>
